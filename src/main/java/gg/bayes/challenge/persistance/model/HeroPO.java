@@ -1,0 +1,40 @@
+package gg.bayes.challenge.persistance.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Set;
+import java.util.UUID;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "dota_hero")
+public class HeroPO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
+    private UUID id;
+    private String name;
+
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private Set<EventsPO> events;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+    private Set<SpellEventsPO> spellEvents;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+    private Set<KillEventsPO> killEvents;
+}
